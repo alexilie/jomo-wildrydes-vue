@@ -1,11 +1,11 @@
-/*global WildRydes _config*/
+/*global JomoWildRydesUserPool _config*/
 
-var WildRydes = window.WildRydes || {};
-WildRydes.map = WildRydes.map || {};
+var JomoWildRydesUserPool = window.JomoWildRydesUserPool || {};
+JomoWildRydesUserPool.map = JomoWildRydesUserPool.map || {};
 
 (function rideScopeWrapper($) {
     var authToken;
-    WildRydes.authToken.then(function setAuthToken(token) {
+    JomoWildRydesUserPool.authToken.then(function setAuthToken(token) {
         if (token) {
             authToken = token;
         } else {
@@ -47,7 +47,7 @@ WildRydes.map = WildRydes.map || {};
         displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
-            WildRydes.map.unsetLocation();
+            JomoWildRydesUserPool.map.unsetLocation();
             $('#request').prop('disabled', 'disabled');
             $('#request').text('Set Pickup');
         });
@@ -57,13 +57,13 @@ WildRydes.map = WildRydes.map || {};
     $(function onDocReady() {
         $('#request').click(handleRequestClick);
         $('#signOut').click(function() {
-            WildRydes.signOut();
+            JomoWildRydesUserPool.signOut();
             alert("You have been signed out.");
             window.location = "signin.html";
         });
-        $(WildRydes.map).on('pickupChange', handlePickupChanged);
+        $(JomoWildRydesUserPool.map).on('pickupChange', handlePickupChanged);
 
-        WildRydes.authToken.then(function updateAuthMessage(token) {
+        JomoWildRydesUserPool.authToken.then(function updateAuthMessage(token) {
             if (token) {
                 displayUpdate('You are authenticated. Click to see your <a href="#authTokenModal" data-toggle="modal">auth token</a>.');
                 $('.authToken').text(token);
@@ -82,28 +82,28 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function handleRequestClick(event) {
-        var pickupLocation = WildRydes.map.selectedPoint;
+        var pickupLocation = JomoWildRydesUserPool.map.selectedPoint;
         event.preventDefault();
         requestUnicorn(pickupLocation);
     }
 
     function animateArrival(callback) {
-        var dest = WildRydes.map.selectedPoint;
+        var dest = JomoWildRydesUserPool.map.selectedPoint;
         var origin = {};
 
-        if (dest.latitude > WildRydes.map.center.latitude) {
-            origin.latitude = WildRydes.map.extent.minLat;
+        if (dest.latitude > JomoWildRydesUserPool.map.center.latitude) {
+            origin.latitude = JomoWildRydesUserPool.map.extent.minLat;
         } else {
-            origin.latitude = WildRydes.map.extent.maxLat;
+            origin.latitude = JomoWildRydesUserPool.map.extent.maxLat;
         }
 
-        if (dest.longitude > WildRydes.map.center.longitude) {
-            origin.longitude = WildRydes.map.extent.minLng;
+        if (dest.longitude > JomoWildRydesUserPool.map.center.longitude) {
+            origin.longitude = JomoWildRydesUserPool.map.extent.minLng;
         } else {
-            origin.longitude = WildRydes.map.extent.maxLng;
+            origin.longitude = JomoWildRydesUserPool.map.extent.maxLng;
         }
 
-        WildRydes.map.animate(origin, dest, callback);
+        JomoWildRydesUserPool.map.animate(origin, dest, callback);
     }
 
     function displayUpdate(text) {
